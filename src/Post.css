@@ -1,0 +1,41 @@
+.post {
+  background-color: white;
+  padding: 15px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+
+button[id="delete"] {
+  position: absolute;
+  right: 3px;
+  background-color: whitesmoke;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.post__header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.post__info > h2 {
+  font-size: 15px;
+}
+
+.post__info > p {
+  color: gray;
+  font-size: 13px;
+}
+
+.post__body {
+  overflow-wrap: anywhere;
+}
+
+.post__buttons {
+  display: flex;
+  justify-content: space-evenly;
+}

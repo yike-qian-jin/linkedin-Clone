@@ -1,0 +1,26 @@
+.app {
+  background-color: #f3f2ef;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.app__body {
+  display: flex;
+  /* max-width: 1200px; */
+  width: 80%;
+  margin: 35px 20px 0 20px;
+}
+
+.app__loading {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.app__loading > img {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 15px;
+}
