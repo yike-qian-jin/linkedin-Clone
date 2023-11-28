@@ -6,8 +6,8 @@
 .feed__inputContainer {
   background-color: white;
   padding: 10px 10px 20px 10px;
-  border-radius: 20px;
   margin-bottom: 20px;
+  border-radius: 20px;
 }
 
 .feed__input {
