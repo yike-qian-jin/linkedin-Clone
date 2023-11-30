@@ -1,51 +1,52 @@
-# Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+name: Build and Deploy to Firebase Hosting
 
+# Controls when the workflow will run
 on:
-  # Runs on pushes targeting the default branch
+  # Triggers the workflow on push or pull request events but only for the "master" branch
   push:
-    branches: ['main']
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# Sets the GITHUB_TOKEN permissions to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# Allow one concurrent deployment
-concurrency:
-  group: 'pages'
-  cancel-in-progress: true
-
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # Single deploy job since we're just deploying
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    name: Build
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@master
+      - name: Install dependencies
+        run: npm ci
+      - name: Build project
+        run: npm run build
+      - name: Archive production artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: dist
+          path: dist
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    name: Deploy
+    needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Set up Node
-        uses: actions/setup-node@v3
+      - name: Checkout repository
+        uses: actions/checkout@master
+      - name: Download arctifact
+        uses: actions/download-artifact@master
         with:
-          node-version: 18
-          cache: 'npm'
-      - name: Install dependencies
-        run: npm install
-      - name: Build
-        run: npm run build
-      - name: Setup Pages
-        uses: actions/configure-pages@v3
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+          name: dist
+          path: dist
+      - name: Deploy to Firebase Hosting
+        uses: w9jds/firebase-action@master
         with:
-          # Upload dist repository
-          path: './dist'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
+          args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
